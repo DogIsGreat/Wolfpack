@@ -1,3 +1,26 @@
 [CPU TIME USED] (0.008355) at End of the processing time.  
 [CPU TIME USED] (0.000422) at End of the processing time.  
 [CPU TIME USED] (0.002300) at Total runtime.  
+[CPU TIME USED] (0.001657) at End of the loading time.  
+[CPU TIME USED] (0.001553) at End of the processing time.  
+[CPU TIME USED] (0.003443) at Total runtime.  
+[ERROR] (src/datafile.c:14 errno: No such file or directory) Unable to open file: name = clock_t 
+[CPU TIME USED] (0.000963) at End of the loading time.  
+[CPU TIME USED] (0.000400) at End of the processing time.  
+[CPU TIME USED] (0.001586) at Total runtime.  
+[ERROR] (src/datafile.c:14 errno: No such file or directory) Unable to open file: name = alkdsf 
+[CPU TIME USED] (0.001944) at End of the loading time.  
+[CPU TIME USED] (0.005951) at End of the processing time.  
+[CPU TIME USED] (0.008045) at Total runtime.  
+[CPU TIME USED] (0.001133) at End of the loading time.  
+[CPU TIME USED] (0.002270) at End of the processing time.  
+[CPU TIME USED] (0.003588) at Total runtime.  
+[CPU TIME USED] (0.001820) at End of the loading time.  
+[CPU TIME USED] (0.005691) at End of the processing time.  
+[CPU TIME USED] (0.007560) at Total runtime.  
+[CPU TIME USED] (0.002090) at End of the loading time.  
+[CPU TIME USED] (0.004983) at End of the processing time.  
+[CPU TIME USED] (0.007288) at Total runtime.  
+[CPU TIME USED] (0.001323) at End of the loading time.  
+[CPU TIME USED] (0.002477) at End of the processing time.  
+[CPU TIME USED] (0.003951) at Total runtime.  

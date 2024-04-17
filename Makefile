@@ -3,16 +3,16 @@ UNAME_S := $(shell uname -s)
 #Header components, Flags, Sources, Libraries, and Locations to be compiled.
 CC=clang
 ###Extra c flags  -Isrc
-CFLAGS=-g -O0  -Wall -Wextra   $(OPTFLAGS)
+CFLAGS=-g -O2  -Wall -Wextra -Xpreprocessor -fopenmp $(OPTFLAGS)
 ifeq ($(UNAME_S),Darwin)
-	INCLUDES=-I/opt/homebrew/opt/gsl/include
-	LDLIBS=-L/opt/homebrew/opt/gsl/lib $(OPTLIBS)
+	INCLUDES=-I/opt/homebrew/opt/gsl/include -I/opt/homebrew/opt/libomp/include
+	LDLIBS=-L/opt/homebrew/opt/gsl/lib -L/opt/homebrew/opt/libomp/lib $(OPTLIBS)
 endif
 ifeq ($(UNAME_S),Linux)
 	INCLUDES=-I/usr/include/gsl
 	LDLIBS=-L/usr/lib64 $(OPTLIBS)
 endif
-LIBS=-lgsl -lgslcblas -lm $(OPTLIBS)
+LIBS=-lgsl -lgslcblas -lm -lomp $(OPTLIBS)
 
 SOURCES=$(wildcard src/**/*.c src/*.c)
 OBJECTS=$(patsubst %.c,%.o,$(SOURCES))

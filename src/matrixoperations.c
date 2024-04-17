@@ -1,8 +1,16 @@
+// Custome debugging and standard time library.
 #include "dbg.h"
 #include "datafile.h"
+#include <time.h>
+
+// C Standard Libraries
 #include <stdio.h>
 #include <string.h>
-#include <time.h>
+
+// Open mp Parallel Processing Library
+#include <omp.h>
+
+// GSL Science Library
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_linalg.h>
@@ -15,14 +23,14 @@ int main(){
         return 1;
     }
 
-    clock_t start_load, start_process,  end_load, end_process;
-    start_load = clock();
-    double cpu_time_used;
+
 
     int M = 2;
     int N = 2;
     int O = 0;
     int P = 0;
+
+    double max = 0.0;
 
     char file1[256];
     char file2[256];
@@ -33,6 +41,10 @@ int main(){
     printf("Please specify the name the csv file for the second matrix. \n");
     scanf("%255s", file2);
     getchar();
+
+    clock_t start_load, start_process,  end_load, end_process;
+    start_load = clock();
+    double cpu_time_used;
 
     // File loading of Matrix Values.
     count_rows_cols(file1, &M, &N);
@@ -48,25 +60,35 @@ int main(){
         printf("You must provide 2 square matrixes for this program as of now.\n");
     }
     end_load = clock();
-    cpu_time_used = ((double) (end_load - start_process)) / CLOCKS_PER_SEC;
-    process_time(cpu_time_used, "End of the processing time. ");
+    cpu_time_used = ((double) (end_load - start_load)) / CLOCKS_PER_SEC;
+    process_time(cpu_time_used, "End of the loading time. ");
 
     start_process = clock ();
 
-    gsl_matrix_mul_elements(A,B);
-    double max = gsl_matrix_max(A);
-    gsl_matrix_transpose(B);
+                gsl_matrix_mul_elements(A,B);
 
-    for (int i = 0; i < M; i++ ){
-        printf("( ");
-        for (int j = 0; j < N; j++){
-            printf(" %g ", gsl_matrix_get(A,i,j));
-        }
-        printf(" ) \n");
+                max = gsl_matrix_max(A);
+
+                gsl_matrix_transpose(B);
+
+    #pragma omp parallel
+    {
+        #pragma omp for
+            for (int i = 0; i < M; i++ ){
+                printf("( ");
+                for (int j = 0; j < N; j++){
+                    printf(" %g ", gsl_matrix_get(A,i,j));
+                }
+                printf(" ) \n");
+            }
     }
     printf(" maximum value %f \n", max);
     printf(" The transposed matrix B is: \n");
 
+
+    #pragma omp parallel
+    {
+        #pragma omp for
         for (int i = 0; i < M; i++ ){
         printf("( ");
         for (int j = 0; j < N; j++){
@@ -74,6 +96,7 @@ int main(){
         }
         printf(" ) \n");
     }
+}
 
     // Find the determinant.
     gsl_permutation *p = gsl_permutation_alloc(N);
@@ -91,11 +114,16 @@ int main(){
         gsl_linalg_LU_invert(B, p, inverse);
 
         printf("The inverse matrix is: \n");
-        for( int i = 0; i < N; i++){
-            for (int j = 0; j < N; j++){
-                printf("%g\t", gsl_matrix_get(inverse, i, j));
+
+        #pragma omp parallel
+        {
+        #pragma omp for
+            for( int i = 0; i < N; i++){
+                for (int j = 0; j < N; j++){
+                    printf("%g\t", gsl_matrix_get(inverse, i, j));
+                }
+                printf("\n");
             }
-            printf("\n");
         }
         gsl_matrix_free(inverse);
     }
